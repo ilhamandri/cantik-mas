@@ -14,4 +14,8 @@ Rails.application.routes.draw do
 
   	resources :users
   	resources :notifications
+  	resources :categories
+  	resources :gold_types
+  	resources :sub_categories
+  	resources :items
 end
