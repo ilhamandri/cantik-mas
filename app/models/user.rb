@@ -20,4 +20,5 @@ class User < ApplicationRecord
   STAFF = 'staff'
 
   belongs_to :store
+  has_many :customers
 end

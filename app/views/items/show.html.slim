@@ -1,0 +1,46 @@
+container-fluid
+  .col-lg-12.col-md-12
+    .card.mb-4
+      .card-header.white-text.info-color
+        h5.font-weight-500.my-1
+          | Detil Barang
+      .card-body
+        = form_for :item, url: "", method: "" do |form|
+          .form-group
+            label for="code" Kode
+            = form.text_field :code, required: true, class: "form-control md-form", id: "name", readonly: "true"
+
+          .form-group
+            label Jenis Emas
+            input readonly=true value="#{@item.gold_type.name}" class="form-control md-form"
+
+          .form-group
+            label Kategori
+            input readonly=true value="#{@item.sub_category.category.name} - #{@item.sub_category.name}" class="form-control md-form"
+
+          .form-group
+            label Berat
+            input readonly=true value="#{@item.weight}" class="form-control md-form"
+
+          .form-group
+            label Status
+            - if @item.stock == 1
+                input readonly=true value="Tersedia" class="form-control md-form" style="color: green" 
+            - else
+              input readonly=true value="Tidak Tersedia" class="form-control md-form"  style="color: red" 
+
+              .form-group
+                label.text-danger TERJUAL
+                br
+                label Kasir - Tanggal
+                input readonly=true value="-" class="form-control md-form"
+          
+          - if @item.stock > 0
+            .row
+              .col-6.text-center
+                = button_to "Hapus", @item, :method=>:delete, :class=>"btn btn-danger"
+              .col-6.text-center
+                a href='#{edit_item_path(id: @item.id)}' 
+                  button.btn.btn-warning.black-text type="button" 
+                    | Ubah
+

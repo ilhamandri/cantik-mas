@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_18_124252) do
+ActiveRecord::Schema.define(version: 2020_02_19_070752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,17 @@ ActiveRecord::Schema.define(version: 2020_02_18_124252) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "customers", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name", null: false
+    t.bigint "phone", null: false
+    t.string "email", null: false
+    t.string "address", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_customers_on_user_id"
+  end
+
   create_table "gold_types", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -52,10 +63,12 @@ ActiveRecord::Schema.define(version: 2020_02_18_124252) do
     t.integer "stock", default: 1, null: false
     t.bigint "sub_category_id", null: false
     t.bigint "gold_type_id", null: false
+    t.bigint "store_id", null: false
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["gold_type_id"], name: "index_items_on_gold_type_id"
+    t.index ["store_id"], name: "index_items_on_store_id"
     t.index ["sub_category_id"], name: "index_items_on_sub_category_id"
   end
 
@@ -121,7 +134,9 @@ ActiveRecord::Schema.define(version: 2020_02_18_124252) do
     t.index ["store_id"], name: "index_users_on_store_id"
   end
 
+  add_foreign_key "customers", "users"
   add_foreign_key "items", "gold_types"
+  add_foreign_key "items", "stores"
   add_foreign_key "items", "sub_categories"
   add_foreign_key "notifications", "users", column: "from_user_id"
   add_foreign_key "notifications", "users", column: "to_user_id"

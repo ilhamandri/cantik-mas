@@ -3,5 +3,6 @@ class Item < ApplicationRecord
   
   belongs_to :sub_category
   belongs_to :gold_type
+  belongs_to :store
 end
 

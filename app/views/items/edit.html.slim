@@ -1,0 +1,37 @@
+container-fluid
+  .col-lg-12.col-md-12
+    .card.mb-4
+      .card-header.white-text.info-color
+        h5.font-weight-500.my-1
+          | Ubah Barang - #{@item.code}
+      .card-body
+        = form_for :item, url: item_path(id: @item.id), method: "PUT" do |form|
+          .form-group
+            label for="name" Kode
+            = form.text_field :code, required: true, class: "form-control md-form"
+
+          .form-group
+            label for="item" Jenis Emas
+            select name="item[gold_type_id]" required=true class="mdb-select md-form md-outline colorful-select dropdown-primary" searchable="Cari..."
+              - @gold_types.each do |gold_type|
+                - if @item.gold_type.id == gold_type.id
+                  option value="#{gold_type.id}" selected="selected"
+                    | #{gold_type.name} 
+                - else
+                  option value="#{gold_type.id}"
+                    | #{gold_type.name} 
+          .form-group
+            label for="item" Kategori
+            select name="item[sub_category_id]" required=true class="mdb-select md-form md-outline colorful-select dropdown-primary" searchable="Cari..."
+              - @categories.each do |category|
+                - @sub_categories = category.sub_categories.order("name ASC")
+                - @sub_categories.each do |sub_cat|
+                  option value="#{sub_cat.id}"
+                    | #{category.name} - #{sub_cat.name} 
+
+          .form-group
+            label for="name" Berat
+            = form.number_field :weight, required: true, class: "form-control md-form", step: "0.00001"
+
+          .form-group.text-center
+            = form.submit "Ubah", class: "btn btn-warning"
