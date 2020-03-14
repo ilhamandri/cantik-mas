@@ -20,5 +20,6 @@ Rails.application.routes.draw do
   	resources :gold_types
   	resources :sub_categories
   	resources :items
-
+    resources :gold_prices
+    resources :buckets
 end

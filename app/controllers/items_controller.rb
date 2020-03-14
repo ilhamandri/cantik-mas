@@ -58,7 +58,7 @@ class ItemsController < ApplicationController
   private
     def item_params
       params.require(:item).permit(
-        :code, :weight, :sub_category_id, :gold_type_id
+        :code, :weight, :sub_category_id, :gold_type_id, :bucket_id
       )
     end
 

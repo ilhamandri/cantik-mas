@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_19_070752) do
+ActiveRecord::Schema.define(version: 2020_03_14_075521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,13 @@ ActiveRecord::Schema.define(version: 2020_02_19_070752) do
     t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable_type_and_trackable_id"
   end
 
+  create_table "buckets", force: :cascade do |t|
+    t.string "name", null: false
+    t.float "weight", default: 0.0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "categories", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -49,6 +56,15 @@ ActiveRecord::Schema.define(version: 2020_02_19_070752) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_customers_on_user_id"
+  end
+
+  create_table "gold_prices", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "gold_type_id", null: false
+    t.float "buy", null: false
+    t.float "sell", null: false
+    t.index ["gold_type_id"], name: "index_gold_prices_on_gold_type_id"
   end
 
   create_table "gold_types", force: :cascade do |t|
@@ -67,6 +83,9 @@ ActiveRecord::Schema.define(version: 2020_02_19_070752) do
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "bucket_id"
+    t.float "buy", default: 0.0, null: false
+    t.index ["bucket_id"], name: "index_items_on_bucket_id"
     t.index ["gold_type_id"], name: "index_items_on_gold_type_id"
     t.index ["store_id"], name: "index_items_on_store_id"
     t.index ["sub_category_id"], name: "index_items_on_sub_category_id"
@@ -135,6 +154,8 @@ ActiveRecord::Schema.define(version: 2020_02_19_070752) do
   end
 
   add_foreign_key "customers", "users"
+  add_foreign_key "gold_prices", "gold_types"
+  add_foreign_key "items", "buckets"
   add_foreign_key "items", "gold_types"
   add_foreign_key "items", "stores"
   add_foreign_key "items", "sub_categories"

@@ -1,4 +1,4 @@
-container-fluid
+.container-fluid
   .col-lg-12.col-md-12
     .card.mb-4
       .card-header.white-text.info-color
@@ -19,8 +19,22 @@ container-fluid
             input readonly=true value="#{@item.sub_category.category.name} - #{@item.sub_category.name}" class="form-control md-form"
 
           .form-group
+            label Baki
+            input readonly=true value="#{@item.bucket.name}" class="form-control md-form"
+
+          .form-group
             label Berat
             input readonly=true value="#{@item.weight}" class="form-control md-form"
+
+          .form-group
+            label Harga Beli
+            input readonly=true value="#{number_with_delimiter(@item.buy.to_i, delimiter: ".")}" class="form-control md-form"
+
+          .form-group
+            - price = @item.gold_type.gold_price.sell
+            label Harga Jual ( #{number_with_delimiter(price.to_i, delimiter: ".")} / gram )
+            - price *= @item.weight
+            input readonly=true value="#{number_with_delimiter(price.to_i, delimiter: ".")}" class="form-control md-form"
 
           .form-group
             label Status

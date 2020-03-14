@@ -2,8 +2,13 @@ nav.navbar.fixed-top.navbar-expand-lg.scrolling-navbar.double-nav
   .float-left
     a.button-collapse data-activates="slide-out" href="#" 
       i.fas.fa-bars
-  .breadcrumb-dn.mr-auto
-    p CANTIK MART
+
+  .mr-auto.breadcrumb-dn.text-bold
+    / .d-flex
+      .p-2.title.h5.text-primary
+        | Jual : #{number_with_delimiter(SystemConfig.find_by(name: "SellPrice").value.to_i, delimiter: ".")}
+      .p-2.title.h5.text-danger
+        | Beli : #{number_with_delimiter(SystemConfig.find_by(name: "BuyPrice").value.to_i, delimiter: ".")}
   .d-flex.change-mode
     ul.nav.navbar-nav.nav-flex-icons.ml-auto
       li.nav-item.dropdown.notifications-nav
