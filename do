@@ -5,17 +5,16 @@
 	- Supplier : CRUD
 - Cuci : CRUD
 - Lebur : CRUD
-- Baki : CRUD
 - Keuangan 
 	- Arus Kas			: CRUD
-	- Hutang			: RUD
-	- Piutang			: RUD
-	- Operasional		: RUD
-	- Biaya Pasti		: RUD
-	- Pajak				: RUD
-	- Gaji				: RUD
-	- Nilai Stok		: RUD
-	- Loss - Profit		: RUD
+	- Hutang			: CRUD
+	- Piutang			: CRUD
+	- Operasional		: CRUD
+	- Biaya Pasti		: CRUD
+	- Pajak				: CRUD
+	- Gaji				: CRUD
+	- Nilai Stok		: CRUD
+	- Loss - Profit		: CRUD
 - Rekap
 	- Item
 		- per toko

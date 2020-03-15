@@ -14,12 +14,25 @@ class ItemsController < ApplicationController
   def new
     @categories = Category.all.order("name ASC")
     @gold_types = GoldType.all.order("name ASC")
+    @buckets = Bucket.all.order("name ASC")
   end
 
   def create
   	item = Item.new item_params
     item.store = current_user.store
     item.stock = 1
+    if item.code == ""
+      item.code = item.gold_type.id.to_s+"/"+item.sub_category.id.to_s+"/"+item.bucket.id.to_s+"/"+DateTime.now.to_i.to_s
+    end
+    file = params[:item][:image]
+    upload_io = params[:item][:image]
+    if file.present?
+      filename = Digest::SHA1.hexdigest([Time.now, rand].join).to_s+File.extname(file.path).to_s
+      File.open(Rails.root.join('public', 'uploads', 'items', filename), 'wb') do |file|
+        file.write(upload_io.read)
+      end
+      item.image = filename
+    end
     item.save!
     item.create_activity :create, owner: current_user
     return redirect_success item_path(id: item.id), "Barang - " + item.code + " berhasil disimpan"
@@ -41,6 +54,7 @@ class ItemsController < ApplicationController
   	return redirect_back_data_error items_path, "Data tidak ditemukan" if @item.nil?
     @categories = Category.all.order("name ASC")
     @gold_types = GoldType.all.order("name ASC")
+    @buckets = Bucket.all.order("name ASC")
   end
 
   def update
@@ -48,6 +62,15 @@ class ItemsController < ApplicationController
   	item = Item.find_by(id: params[:id])
   	return redirect_back_data_error items_path, "Data tidak ditemukan" if item.nil?
   	item.assign_attributes item_params
+    file = params[:item][:image]
+    upload_io = params[:item][:image]
+    if file.present?
+      filename = Digest::SHA1.hexdigest([Time.now, rand].join).to_s+File.extname(file.path).to_s
+      File.open(Rails.root.join('public', 'uploads', 'items', filename), 'wb') do |file|
+        file.write(upload_io.read)
+      end
+      item.image = filename
+    end
   	changes = item.changes
     item.save! if item.changed?
     item.create_activity :edit, owner: current_user, parameters: changes
@@ -58,7 +81,7 @@ class ItemsController < ApplicationController
   private
     def item_params
       params.require(:item).permit(
-        :code, :weight, :sub_category_id, :gold_type_id, :bucket_id
+        :code, :weight, :sub_category_id, :gold_type_id, :bucket_id, :buy, :image
       )
     end
 

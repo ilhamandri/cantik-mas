@@ -46,7 +46,7 @@ class CategoriesController < ApplicationController
   	changes = category.changes
     category.save! if category.changed?
     category.create_activity :edit, owner: current_user, parameters: changes
-    return redirect_success categories_path(id: category.id), "Data Jenis Emas - " + category.name + " - Berhasil Diubah"
+    return redirect_success category_path(id: category.id), "Data Jenis Emas - " + category.name + " - Berhasil Diubah"
 
   end
 

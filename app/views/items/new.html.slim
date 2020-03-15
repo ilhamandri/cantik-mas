@@ -5,10 +5,10 @@ container-fluid
         h5.font-weight-500.my-1
           | Tambah Barang
       .card-body
-        = form_for :item, url: items_path, method: "POST" do |form|
+        = form_for :item, url: items_path, html: { multipart: true }, method: "POST" do |form|
           .form-group
             label for="name" Kode
-            = form.text_field :code, required: true, class: "form-control md-form"
+            = form.text_field :code, class: "form-control md-form"
 
           .form-group
             label for="item" Jenis Emas
@@ -34,6 +34,21 @@ container-fluid
           .form-group
             label for="name" Berat
             = form.number_field :weight, required: true, class: "form-control md-form", step: "0.00001"
+
+          .form-group
+            label for="name" Harga Beli
+            = form.number_field :buy, required: true, class: "form-control md-form", step: "1", value:"100000"
+
+          .form-group
+            label for="store" Foto
+            .input-group
+              .input-group-prepend
+                span#inputGroupFileAddon01.input-group-text
+                  | Upload
+              .custom-file
+                input#inputGroupFile01.custom-file-input[type="file" name="item[image]" aria-describedby="inputGroupFileAddon01"]
+                label.custom-file-label[for="inputGroupFile01"]
+                  | Pilih Foto
 
           .form-group.text-center
             = form.submit "Tambah", class: "btn btn-primary"

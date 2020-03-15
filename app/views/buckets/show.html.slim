@@ -15,8 +15,11 @@ container-fluid
             input readonly=true value="#{@bucket.items.count}" class="form-control md-form"
 
           .row
-            .col-12.text-center
+            .col.text-center
               a href='#{edit_bucket_path(id: @bucket.id)}' 
                 button.btn.btn-warning.black-text type="button" 
                   | Ubah
+            - if !@bucket.items.present?
+              .col.text-center
+                = button_to "Hapus", @bucket, :method=>:delete, :class=>"btn btn-danger"
 

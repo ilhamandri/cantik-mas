@@ -26,10 +26,10 @@ class BucketsController < ApplicationController
   	return redirect_back_data_error buckets_path, "Data tidak ditemukan" if params[:id].nil?
   	bucket = Bucket.find_by(id: params[:id])
   	return redirect_back_data_error buckets_path, "Data tidak ditemukan" if bucket.nil?
-  	return redirect_back_data_error buckets_path, "Data tidak dapat dihapus" if bucket.sub_buckets.count > 0
+  	return redirect_back_data_error buckets_path, "Data tidak dapat dihapus" if bucket.items.count > 0
   	bucket_name = bucket.name
   	bucket.destroy
-  	return redirect_success buckets_path, "Data Jenis Emas - " + bucket_name + " berhasil dihapus"
+  	return redirect_success buckets_path, "Data Baki - " + bucket_name + " berhasil dihapus"
   end
 
   def edit
@@ -46,7 +46,7 @@ class BucketsController < ApplicationController
   	changes = bucket.changes
     bucket.save! if bucket.changed?
     bucket.create_activity :edit, owner: current_user, parameters: changes
-    return redirect_success buckets_path(id: bucket.id), "Data Jenis Emas - " + bucket.name + " - Berhasil Diubah"
+    return redirect_success bucket_path(id: bucket.id), "Data Jenis Emas - " + bucket.name + " - Berhasil Diubah"
 
   end
 
