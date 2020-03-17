@@ -21,4 +21,5 @@ class User < ApplicationRecord
 
   belongs_to :store
   has_many :customers
+  has_many :custom_orders
 end

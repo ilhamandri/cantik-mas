@@ -3,4 +3,5 @@ class Customer < ApplicationRecord
   validates_uniqueness_of :phone
   
   belongs_to :user
+  has_many :custom_orders
 end

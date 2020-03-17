@@ -22,4 +22,7 @@ Rails.application.routes.draw do
   	resources :items
     resources :gold_prices
     resources :buckets
+    resources :suppliers
+
+    resources :custom_orders
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_14_075521) do
+ActiveRecord::Schema.define(version: 2020_03_17_065119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,41 @@ ActiveRecord::Schema.define(version: 2020_03_14_075521) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "custom_order_items", force: :cascade do |t|
+    t.bigint "gold_type_id", null: false
+    t.float "estimate_weight", null: false
+    t.string "description", null: false
+    t.integer "estimate_work", default: 2, null: false
+    t.float "final_weight", default: 0.0, null: false
+    t.bigint "total"
+    t.bigint "service_cost", default: 0, null: false
+    t.bigint "custom_order_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["custom_order_id"], name: "index_custom_order_items_on_custom_order_id"
+    t.index ["gold_type_id"], name: "index_custom_order_items_on_gold_type_id"
+  end
+
+  create_table "custom_orders", force: :cascade do |t|
+    t.string "invoice", null: false
+    t.bigint "store_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "customer_id", null: false
+    t.bigint "supplier_id"
+    t.integer "estimate_work", default: 2, null: false
+    t.bigint "down_payment", null: false
+    t.bigint "service_cost", default: 0, null: false
+    t.bigint "total_payment", default: 0, null: false
+    t.datetime "date_process"
+    t.datetime "date_receive"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_custom_orders_on_customer_id"
+    t.index ["store_id"], name: "index_custom_orders_on_store_id"
+    t.index ["supplier_id"], name: "index_custom_orders_on_supplier_id"
+    t.index ["user_id"], name: "index_custom_orders_on_user_id"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -131,6 +166,14 @@ ActiveRecord::Schema.define(version: 2020_03_14_075521) do
     t.index ["category_id"], name: "index_sub_categories_on_category_id"
   end
 
+  create_table "suppliers", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "phone", default: 0, null: false
+    t.string "address", default: "-", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -153,6 +196,12 @@ ActiveRecord::Schema.define(version: 2020_03_14_075521) do
     t.index ["store_id"], name: "index_users_on_store_id"
   end
 
+  add_foreign_key "custom_order_items", "custom_orders"
+  add_foreign_key "custom_order_items", "gold_types"
+  add_foreign_key "custom_orders", "customers"
+  add_foreign_key "custom_orders", "stores"
+  add_foreign_key "custom_orders", "suppliers"
+  add_foreign_key "custom_orders", "users"
   add_foreign_key "customers", "users"
   add_foreign_key "gold_prices", "gold_types"
   add_foreign_key "items", "buckets"
